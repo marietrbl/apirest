@@ -1,28 +1,25 @@
+import { createUser } from "./src/modules/user/service/user.controller"
 import { Router } from "express"
-import { userController } from './src/modules/user'
-import { db } from './src/model/configdb'
 
-export const router = Router()
-router.use("/service", userController)
 
-const express = require ('express')
-const routes = express.Router()
 
+const router = Router()
 
 // buscar dados
-routes.get('/', (req, res) => {
-  return res.json(db)
+router.get('/', (req, res) => {
+  return res.json("lalalla")
 })
 
 // inserir dados
-routes.post('/add', (req, res) => {
+router.post('/add', async(req, res) => {
   const body = req.body
-
-  if (!body)
-  return res.status(400).end()
-
-  db.push(body)
-  return res.json(body)
+   
+  if(!body){
+    return res.status(400).end()
+  }
+  const user = await createUser(req)
+  
+  return res.json(user)
 })
 
-module.exports = routes
+export default router
